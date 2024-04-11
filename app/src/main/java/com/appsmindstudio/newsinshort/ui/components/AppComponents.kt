@@ -136,7 +136,7 @@ fun MediumFontTextComponent(textValue: String, centerAlign: Boolean = false) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp, end = 15.dp),
+            .padding(top = 10.dp, bottom = 10.dp),
         text = textValue,
         fontFamily = Fonts.mediumFontFamily,
         fontSize = 14.sp,
@@ -148,8 +148,7 @@ fun MediumFontTextComponent(textValue: String, centerAlign: Boolean = false) {
 fun RegularFontTextComponent(textValue: String, centerAlign: Boolean = false) {
     Text(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp),
+            .fillMaxWidth(),
         text = textValue,
         fontFamily = Fonts.regularFontFamily,
         fontSize = 16.sp,
@@ -161,8 +160,7 @@ fun RegularFontTextComponent(textValue: String, centerAlign: Boolean = false) {
 fun SemiBoldFontTextComponent(textValue: String, centerAlign: Boolean = false) {
     Text(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp),
+            .fillMaxWidth(),
         text = textValue,
         fontFamily = Fonts.semiBoldFontFamily,
         fontSize = 24.sp,
@@ -175,8 +173,6 @@ fun NewsColumnComponent(article: Article) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp)
-            .background(Color.White)
     ) {
         AsyncImage(
             modifier = Modifier
@@ -221,7 +217,7 @@ fun AuthorDetailsComponent(authorName: String?, sourceName: String?) {
             Text(
                 fontFamily = Fonts.regularFontFamily,
                 fontSize = 16.sp,
-                text = "Author:",
+                text = if (authorName.isNullOrEmpty()) "" else "Author:",
                 color = Color.Gray,
                 textAlign = TextAlign.Start
             )

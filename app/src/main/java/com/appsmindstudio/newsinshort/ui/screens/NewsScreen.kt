@@ -2,6 +2,7 @@ package com.appsmindstudio.newsinshort.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.VerticalPager
@@ -41,7 +42,10 @@ fun NewsScreen(
 
     val snackBarHostState = remember { SnackbarHostState() }
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         when (newsRes) {
 
             is ResourceState.Loading -> {
@@ -61,7 +65,8 @@ fun NewsScreen(
                     state = pagerState,
                     modifier = Modifier.fillMaxSize(),
                     pageSize = PageSize.Fill,
-                    pageSpacing = 8.dp // Reduced page spacing for better alignment
+                    contentPadding = PaddingValues(10.dp),
+                    pageSpacing = 10.dp // Reduced page spacing for better alignment
                 ) { page: Int ->
 
                     val article = response?.articles?.getOrNull(page)
