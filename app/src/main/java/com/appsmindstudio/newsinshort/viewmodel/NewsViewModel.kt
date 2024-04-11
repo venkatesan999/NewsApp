@@ -13,6 +13,7 @@ import com.appsmindstudio.newsinshort.util.connectivity.NetworkConnectivityObser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,13 +36,21 @@ class NewsViewModel @Inject constructor(
     fun getNews(isInternetConnected: ConnectivityObserver.Status) {
         viewModelScope.launch(Dispatchers.IO) {
             if (isInternetConnected == ConnectivityObserver.Status.Available) {
-                newsRepository.getNewsHeadlines(AppConstants.COUNTRY)
-                    .collectLatest { newsResponse ->
-                        _newsHeadlines.value = newsResponse
+                try {
+                    val newsResponseFlow = async {
+                        newsRepository.getNewsHeadlines(AppConstants.COUNTRY)
                     }
+
+                    val newsResponse = newsResponseFlow.await()
+
+                    newsResponse.collectLatest { resourceState ->
+                        _newsHeadlines.value = resourceState
+                    }
+                } catch (e: Exception) {
+                    _newsHeadlines.value = ResourceState.Error(e.message ?: "Unknown error")
+                }
             } else {
-                _newsHeadlines.value =
-                    ResourceState.Error(NO_INTERNET)
+                _newsHeadlines.value = ResourceState.Error(NO_INTERNET)
             }
         }
     }
