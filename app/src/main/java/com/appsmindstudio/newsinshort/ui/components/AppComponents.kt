@@ -39,10 +39,14 @@ import coil.compose.AsyncImage
 import com.appsmindstudio.newsinshort.R
 import com.appsmindstudio.newsinshort.data.entity.Article
 import com.appsmindstudio.newsinshort.util.AppConstants
+import com.appsmindstudio.newsinshort.util.MMM_dd
+import com.appsmindstudio.newsinshort.util.convertToDateFormat
+import com.appsmindstudio.newsinshort.util.yyyy_MM_dd_T_HH_mm_ss
 
 object Fonts {
     val regularFontFamily = FontFamily(Font(R.font.josefin_sans_regular))
-    val mediumFontFamily = FontFamily(Font(R.font.josefin_sans_semi_bold))
+    val mediumFontFamily = FontFamily(Font(R.font.josefin_sans_medium))
+    val semiBoldFontFamily = FontFamily(Font(R.font.josefin_sans_semi_bold))
 }
 
 @Composable
@@ -128,6 +132,19 @@ fun CustomSnackBarComponent(
 }
 
 @Composable
+fun MediumFontTextComponent(textValue: String, centerAlign: Boolean = false) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, end = 15.dp),
+        text = textValue,
+        fontFamily = Fonts.mediumFontFamily,
+        fontSize = 14.sp,
+        textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
+    )
+}
+
+@Composable
 fun RegularFontTextComponent(textValue: String, centerAlign: Boolean = false) {
     Text(
         modifier = Modifier
@@ -147,7 +164,7 @@ fun SemiBoldFontTextComponent(textValue: String, centerAlign: Boolean = false) {
             .fillMaxWidth()
             .padding(vertical = 10.dp),
         text = textValue,
-        fontFamily = Fonts.mediumFontFamily,
+        fontFamily = Fonts.semiBoldFontFamily,
         fontSize = 24.sp,
         textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
     )
@@ -171,7 +188,14 @@ fun NewsColumnComponent(article: Article) {
             placeholder = painterResource(id = R.drawable.picture),
             error = painterResource(id = R.drawable.picture)
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        MediumFontTextComponent(
+            textValue = "Publish at: ${
+                article.publishedAt.convertToDateFormat(
+                    yyyy_MM_dd_T_HH_mm_ss,
+                    MMM_dd
+                )
+            }"
+        )
         SemiBoldFontTextComponent(textValue = article.title ?: "")
         Spacer(modifier = Modifier.height(10.dp))
         RegularFontTextComponent(textValue = article.description ?: "")
@@ -189,17 +213,28 @@ fun AuthorDetailsComponent(authorName: String?, sourceName: String?) {
             .padding(horizontal = 10.dp, vertical = 24.dp)
 
     ) {
-        authorName?.also {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 2.dp)
+        ) {
             Text(
                 fontFamily = Fonts.regularFontFamily,
                 fontSize = 16.sp,
-                text = it,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .weight(1f)
+                text = "Author:",
+                color = Color.Gray,
+                textAlign = TextAlign.Start
             )
+
+            authorName?.also {
+                Text(
+                    fontFamily = Fonts.regularFontFamily,
+                    fontSize = 16.sp,
+                    text = it,
+                    textAlign = TextAlign.Start
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
         sourceName?.also {
             Text(
                 fontFamily = Fonts.regularFontFamily,
