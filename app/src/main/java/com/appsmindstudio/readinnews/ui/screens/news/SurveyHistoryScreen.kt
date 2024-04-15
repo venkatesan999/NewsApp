@@ -220,7 +220,7 @@ fun Modifier.customBorder(isEnabled: Boolean): Modifier {
         this.then(
             border(
                 width = 2.dp,
-                color = Color(0xFFEFEEF2),
+                color = Color(0x50A0A0A0),
                 shape = RoundedCornerShape(10.dp)
             )
         )
