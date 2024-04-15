@@ -2,15 +2,16 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.google.devtools.ksp)
     kotlin("kapt")
 }
 
 android {
-    namespace = "com.appsmindstudio.newsinshort"
+    namespace = "com.appsmindstudio.readinnews"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.appsmindstudio.newsinshort"
+        applicationId = "com.appsmindstudio.readinnews"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -40,7 +41,7 @@ android {
                 "BASEURL",
                 "\"https://newsapi.org/${apiVersion}/\""
             )
-            buildConfigField("String", "APPLICATION_ID", "\"com.appsmindstudio.newsinshort\"")
+            buildConfigField("String", "APPLICATION_ID", "\"com.appsmindstudio.readinnews\"")
             buildConfigField("String", "API_VERSION", "\"${apiVersion}\"")
             buildConfigField("boolean", "LOG", "true")
             proguardFiles(
@@ -114,6 +115,16 @@ dependencies {
 
     /*Image load*/
     implementation(libs.coil.compose)
+
+    /*Room*/
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    implementation (libs.androidx.runtime.livedata)
+
+    implementation (libs.androidx.datastore.preferences)
 
     /*Testing dependencies*/
     testImplementation(libs.junit)
