@@ -1,4 +1,4 @@
-package com.appsmindstudio.readinnews.ui
+package com.appsmindstudio.readinnews.ui.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,7 +15,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.appsmindstudio.readinnews.data.local.entity.SurveyEntity
+import com.appsmindstudio.readinnews.data.room.models.Survey
 import com.appsmindstudio.readinnews.ui.components.DragComponent
 import com.appsmindstudio.readinnews.ui.navigation.AppNavigation
 import com.appsmindstudio.readinnews.ui.theme.NewsInShortTheme
@@ -46,6 +46,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppEntryPoint(navController: NavHostController) {
     val viewModel: SurveyViewModel = viewModel()
-    val surveyList: List<SurveyEntity> by viewModel.getAllSurvey.observeAsState(initial = emptyList())
+    val surveyList: List<Survey> by viewModel.getAllSurvey.observeAsState(initial = emptyList())
     AppNavigation(navController, surveyList.isNotEmpty())
 }

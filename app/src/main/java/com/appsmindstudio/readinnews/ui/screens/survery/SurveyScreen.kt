@@ -47,9 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.R
-import com.appsmindstudio.readinnews.data.local.entity.SurveyEntity
 import com.appsmindstudio.readinnews.ui.components.Fonts
-import com.appsmindstudio.readinnews.util.getCurrentDateTime
+import com.appsmindstudio.readinnews.util.Utils.countries
 import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 import kotlinx.coroutines.launch
 
@@ -65,6 +64,7 @@ fun SurveyScreen(
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -121,18 +121,6 @@ fun SurveyScreen(
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                val countries = listOf(
-                    "United States of America - US",
-                    "China - CN",
-                    "Germany - DE",
-                    "Japan - JP",
-                    "India - IN",
-                    "United Kingdom (UK) - GB",
-                    "France - FR",
-                    "Italy - IT",
-                    "Brazil - BR",
-                    "Canada - CA"
-                )
                 CustomSpinnerField(countries) { selectedCountry ->
                     countryName.value = selectedCountry.substringBeforeLast(" - ")
                     countryCode.value = selectedCountry.substringAfterLast(" - ")
@@ -143,18 +131,15 @@ fun SurveyScreen(
                     .padding(22.dp)
                     .clickable {
                         if (name.value.isNotEmpty() && countryName.value.isNotEmpty()) {
-                            viewModel.insert(
-                                SurveyEntity(
-                                    surveyDate = getCurrentDateTime(),
-                                    name = name.value,
-                                    country = countryCode.value,
-                                    countryName = countryName.value
-                                )
-                            )
                             onSurveyOverViewScreen(
                                 name.value,
                                 countryName.value,
                                 countryCode.value
+                            )
+                            viewModel.insertSurvey(
+                                name.value,
+                                countryCode.value,
+                                countryName.value
                             )
                         } else {
                             coroutineScope.launch {

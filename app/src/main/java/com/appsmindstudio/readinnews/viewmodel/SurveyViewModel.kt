@@ -1,12 +1,12 @@
 package com.appsmindstudio.readinnews.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.appsmindstudio.readinnews.data.local.entity.SurveyEntity
-import com.appsmindstudio.readinnews.data.repository.SurveyRepository
+import com.appsmindstudio.readinnews.data.room.models.Survey
+import com.appsmindstudio.readinnews.data.room.repository.SurveyRepository
+import com.appsmindstudio.readinnews.util.getCurrentDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,9 +16,17 @@ class SurveyViewModel @Inject constructor(
     private val repository: SurveyRepository
 ) : ViewModel() {
 
-    val getAllSurvey: LiveData<List<SurveyEntity>> = repository.getAllSurvey.asLiveData()
+    val getAllSurvey: LiveData<List<Survey>> = repository.getAllSurvey.asLiveData()
 
-    fun insert(surveyEntity: SurveyEntity) = viewModelScope.launch {
-        repository.insert(surveyEntity)
-    }
+    fun insertSurvey(name: String, countryCode: String, countryName: String) =
+        viewModelScope.launch {
+            repository.insert(
+                Survey(
+                    surveyDate = getCurrentDateTime(),
+                    name = name,
+                    country = countryCode,
+                    countryName = countryName
+                )
+            )
+        }
 }

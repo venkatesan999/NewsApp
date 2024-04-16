@@ -1,7 +1,7 @@
-package com.appsmindstudio.readinnews.data.repository
+package com.appsmindstudio.readinnews.data.api.repository
 
-import com.appsmindstudio.readinnews.data.datasource.NewsDataSource
-import com.appsmindstudio.readinnews.data.entity.NewsResponse
+import com.appsmindstudio.readinnews.data.api.datasource.NewsDataSource
+import com.appsmindstudio.readinnews.data.api.api_models.NewsResponse
 import com.appsmindstudio.readinnews.util.ResourceState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

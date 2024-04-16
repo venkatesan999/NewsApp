@@ -1,4 +1,4 @@
-package com.appsmindstudio.readinnews.ui.screens
+package com.appsmindstudio.readinnews.ui.screens.utils
 
 import android.app.Activity
 import androidx.activity.OnBackPressedCallback

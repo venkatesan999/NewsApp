@@ -3,8 +3,8 @@ package com.appsmindstudio.readinnews.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.appsmindstudio.readinnews.data.entity.NewsResponse
-import com.appsmindstudio.readinnews.data.repository.NewsRepository
+import com.appsmindstudio.readinnews.data.api.api_models.NewsResponse
+import com.appsmindstudio.readinnews.data.api.repository.NewsRepository
 import com.appsmindstudio.readinnews.util.AppConstants.NO_INTERNET
 import com.appsmindstudio.readinnews.util.ResourceState
 import com.appsmindstudio.readinnews.util.connectivity.ConnectivityObserver

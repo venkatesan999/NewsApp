@@ -26,6 +26,16 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            val apiVersion = "v2"
+            buildConfigField("String", "APIKEY", "\"e2ad484ef42848518a38efb9640f2653\"")
+            buildConfigField(
+                "String",
+                "BASEURL",
+                "\"https://newsapi.org/${apiVersion}/\""
+            )
+            buildConfigField("String", "APPLICATION_ID", "\"com.appsmindstudio.readinnews\"")
+            buildConfigField("String", "API_VERSION", "\"${apiVersion}\"")
+            buildConfigField("boolean", "LOG", "true")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

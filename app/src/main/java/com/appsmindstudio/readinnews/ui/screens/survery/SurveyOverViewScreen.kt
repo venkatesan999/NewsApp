@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
-import com.appsmindstudio.readinnews.ui.screens.OnBackPressedCall
+import com.appsmindstudio.readinnews.ui.screens.utils.OnBackPressedCall
 
 @Composable
 fun SurveyOverViewScreen(name: String?, country: String?, onNewsScreen: () -> Unit) {

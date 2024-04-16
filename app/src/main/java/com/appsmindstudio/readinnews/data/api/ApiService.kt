@@ -2,7 +2,7 @@ package com.appsmindstudio.readinnews.data.api
 
 import com.appsmindstudio.readinnews.BuildConfig
 import com.appsmindstudio.readinnews.data.AppConstants
-import com.appsmindstudio.readinnews.data.entity.NewsResponse
+import com.appsmindstudio.readinnews.data.api.api_models.NewsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

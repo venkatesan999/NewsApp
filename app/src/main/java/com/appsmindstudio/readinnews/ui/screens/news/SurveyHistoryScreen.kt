@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appsmindstudio.readinnews.R
-import com.appsmindstudio.readinnews.data.local.entity.SurveyEntity
 import com.appsmindstudio.readinnews.data.local.preferences.pref_manager.AppPreferencesManager
+import com.appsmindstudio.readinnews.data.room.models.Survey
 import com.appsmindstudio.readinnews.ui.components.Fonts
 import com.appsmindstudio.readinnews.viewmodel.SharedViewModel
 import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
@@ -57,9 +57,11 @@ fun SurveyHistoryScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp), contentAlignment = Alignment.Center
+        ) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier
@@ -99,7 +101,7 @@ fun SurveyHistoryScreen(
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    val surveyList: List<SurveyEntity> by viewModel.getAllSurvey.observeAsState(
+                    val surveyList: List<Survey> by viewModel.getAllSurvey.observeAsState(
                         initial = emptyList()
                     )
                     LazyColumn(modifier = Modifier.weight(1f)) {
@@ -157,16 +159,17 @@ fun TakeSurveyButtonComponent(onSurveyScreen: () -> Unit) {
 }
 
 @Composable
-fun SurveyItem(countryName: String, survey: SurveyEntity, onClick: (SurveyEntity) -> Unit) {
+fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick(survey) }
-            .then(
-                Modifier.customBorder(
-                    countryName == survey.country
-                )
-            ),
+//            .then(
+//                Modifier.customBorder(
+//                    countryName == survey.country
+//                )
+//            ),
+        ,
         shape = RoundedCornerShape(10.dp),
         colors = CardColors(
             containerColor = Color(0x30D9D9D9),
@@ -180,7 +183,7 @@ fun SurveyItem(countryName: String, survey: SurveyEntity, onClick: (SurveyEntity
         ) {
             Row {
                 Image(
-                    painter = painterResource(id = R.drawable.news_report),
+                    painter = painterResource(id = if (countryName == survey.country) R.drawable.live else R.drawable.news_report),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
@@ -215,16 +218,17 @@ fun SurveyItem(countryName: String, survey: SurveyEntity, onClick: (SurveyEntity
     }
 }
 
+/*
 fun Modifier.customBorder(isEnabled: Boolean): Modifier {
     return if (isEnabled) {
         this.then(
             border(
-                width = 2.dp,
-                color = Color(0x50A0A0A0),
+                width = 1.dp,
+                color = Color(0x40A0A0A0),
                 shape = RoundedCornerShape(10.dp)
             )
         )
     } else {
         this
     }
-}
+}*/
