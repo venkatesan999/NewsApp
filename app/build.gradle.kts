@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("../keystore/readinnews_keystore.jks")
+            storePassword = "ReadInNews#2024"
+            keyAlias = "ReadInNews"
+            keyPassword = "ReadInNews#2024"
+        }
+    }
     namespace = "com.appsmindstudio.readinnews"
     compileSdk = 34
 
@@ -15,7 +23,7 @@ android {
         minSdk = 29
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -40,6 +48,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
 
         debug {
@@ -58,6 +67,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
 
     }
@@ -108,7 +118,6 @@ dependencies {
 
     /*Hilt*/
     implementation(libs.hilt.android)
-    implementation(project(":utilities"))
     kapt(libs.hilt.android.compiler)
 
     /*Coroutines*/
