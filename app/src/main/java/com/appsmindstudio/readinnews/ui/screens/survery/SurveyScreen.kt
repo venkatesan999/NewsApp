@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 fun SurveyScreen(
     surveyName: String,
     viewModel: SurveyViewModel = hiltViewModel(),
-    onSurveyOverViewScreen: (String, String, String) -> Unit
+    navigateSurveyOverViewScreen: (String, String, String) -> Unit
 ) {
     val name = remember { mutableStateOf(surveyName) }
     val countryCode = remember { mutableStateOf("") }
@@ -131,7 +131,7 @@ fun SurveyScreen(
                     .padding(22.dp)
                     .clickable {
                         if (name.value.isNotEmpty() && countryName.value.isNotEmpty()) {
-                            onSurveyOverViewScreen(
+                            navigateSurveyOverViewScreen(
                                 name.value,
                                 countryName.value,
                                 countryCode.value

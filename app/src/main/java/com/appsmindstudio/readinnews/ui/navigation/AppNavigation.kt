@@ -45,13 +45,14 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
             val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
             SurveyScreen(
-                viewModel.getName(appPreferencesManager)
-            ) { name: String, country: String, countryCode: String ->
-                viewModel.updateCountry(name, country, countryCode, appPreferencesManager)
-                navController.navigate(
-                    Destinations.SURVEY_OVERVIEW_SCREEN.name + "/$name/$country"
-                )
-            }
+                viewModel.getName(appPreferencesManager),
+                navigateSurveyOverViewScreen = { name: String, country: String, countryCode: String ->
+                    viewModel.updateCountry(name, country, countryCode, appPreferencesManager)
+                    navController.navigate(
+                        Destinations.SURVEY_OVERVIEW_SCREEN.name + "/$name/$country"
+                    )
+                }
+            )
         }
 
         composable(
@@ -63,11 +64,11 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
         ) {
             val name = it.arguments?.getString("name")
             val countryName = it.arguments?.getString("countryName")
-            SurveyOverViewScreen(name = name, country = countryName) {
+            SurveyOverViewScreen(name = name, country = countryName, navigateToNewsScreen = {
                 navController.navigate(
                     Destinations.NEWS_GRAPH.name
                 )
-            }
+            })
         }
     }
 }
@@ -87,7 +88,7 @@ fun NavGraphBuilder.news(navController: NavHostController) {
             val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
             SurveyHistoryScreen(
-                onNewsScreen = { name, countryName, countryCode ->
+                navigateToNewsScreen = { name, countryName, countryCode ->
                     if (name?.isNotEmpty() == true && countryName?.isNotEmpty() == true) viewModel.updateCountry(
                         name,
                         countryName,
@@ -96,7 +97,8 @@ fun NavGraphBuilder.news(navController: NavHostController) {
                     )
                     navController.navigate(Destinations.NEWS_SCREEN.name)
                 },
-                onSurveyScreen = { navController.navigate(Destinations.SURVEY_SCREEN.name) })
+                navigateToSurveyScreen = { navController.navigate(Destinations.SURVEY_SCREEN.name) },
+                navigateBack = { navController.popBackStack() })
         }
     }
 }

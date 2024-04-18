@@ -32,7 +32,7 @@ import com.appsmindstudio.readinnews.ui.components.Fonts
 import com.appsmindstudio.readinnews.ui.screens.utils.OnBackPressedCall
 
 @Composable
-fun SurveyOverViewScreen(name: String?, country: String?, onNewsScreen: () -> Unit) {
+fun SurveyOverViewScreen(name: String?, country: String?, navigateToNewsScreen: () -> Unit) {
     OnBackPressedCall()
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -68,7 +68,7 @@ fun SurveyOverViewScreen(name: String?, country: String?, onNewsScreen: () -> Un
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(22.dp)
-                        .clickable { onNewsScreen() }
+                        .clickable { navigateToNewsScreen() }
                         .border(0.7.dp, Color(0xFFFFFFFF), shape = RoundedCornerShape(6.dp))
                         .padding(horizontal = 16.dp, vertical = 12.dp))
             }

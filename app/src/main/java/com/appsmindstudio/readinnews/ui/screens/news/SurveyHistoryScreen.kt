@@ -44,8 +44,9 @@ import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 
 @Composable
 fun SurveyHistoryScreen(
-    onNewsScreen: (name: String?, countryName: String?, countryCode: String?) -> Unit,
-    onSurveyScreen: () -> Unit,
+    navigateToNewsScreen: (name: String?, countryName: String?, countryCode: String?) -> Unit,
+    navigateToSurveyScreen: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: SurveyViewModel = hiltViewModel()
 ) {
 
@@ -68,7 +69,7 @@ fun SurveyHistoryScreen(
                     .fillMaxSize()
             ) {
                 Row(
-                    modifier = Modifier.clickable { onNewsScreen("", "", "") },
+                    modifier = Modifier.clickable { navigateBack() },
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -108,7 +109,7 @@ fun SurveyHistoryScreen(
                         items(surveyList) { survey ->
                             Spacer(modifier = Modifier.height(15.dp))
                             SurveyItem(countryName, survey, onClick = { clickedSurvey ->
-                                onNewsScreen(
+                                navigateToNewsScreen(
                                     clickedSurvey.name,
                                     clickedSurvey.countryName,
                                     clickedSurvey.country
@@ -117,7 +118,7 @@ fun SurveyHistoryScreen(
 
                         }
                     }
-                    TakeSurveyButtonComponent(onSurveyScreen)
+                    TakeSurveyButtonComponent(navigateToSurveyScreen)
                 }
             }
         }
@@ -126,12 +127,12 @@ fun SurveyHistoryScreen(
 }
 
 @Composable
-fun TakeSurveyButtonComponent(onSurveyScreen: () -> Unit) {
+fun TakeSurveyButtonComponent(navigateToSurveyScreen: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(22.dp)
-            .clickable { onSurveyScreen() }
+            .clickable { navigateToSurveyScreen() }
             .border(0.7.dp, Color(0xFFEFEEF2), shape = RoundedCornerShape(6.dp))
             .padding(horizontal = 16.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
