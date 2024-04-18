@@ -2,6 +2,7 @@ package com.appsmindstudio.readinnews.ui.screens.news
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.PageSize
@@ -41,7 +42,7 @@ fun NewsScreen(
         .collectAsState(initial = ConnectivityObserver.Status.Unavailable)
 
     if (country.isNotEmpty())
-        newsViewModel.getNews(status, country)
+        newsViewModel.getNews(status, country.lowercase())
 
     val newsRes by newsViewModel.news.collectAsState()
 
@@ -66,23 +67,27 @@ fun NewsScreen(
 
                 if (response?.articles?.isEmpty() == true)
                     EmptyStateComponent()
-                else VerticalPager(
-                    state = pagerState,
-                    modifier = Modifier.fillMaxSize(),
-                    pageSize = PageSize.Fill,
-                    contentPadding = PaddingValues(10.dp),
-                    pageSpacing = 10.dp // Reduced page spacing for better alignment
-                ) { page: Int ->
+                else {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        VerticalPager(
+                            state = pagerState,
+                            modifier = Modifier.fillMaxSize(),
+                            pageSize = PageSize.Fill,
+                            contentPadding = PaddingValues(10.dp),
+                            pageSpacing = 10.dp // Reduced page spacing for better alignment
+                        ) { page: Int ->
 
-                    val article = response?.articles?.getOrNull(page)
+                            val article = response?.articles?.getOrNull(page)
 
-                    if (article != null) NewsColumnComponent(
-                        article
-                    )
+                            if (article != null) NewsColumnComponent(
+                                article
+                            )
 
+                        }
+
+                        Log.d(TAG, "Success: ${response?.status} = ${response?.totalResults}")
+                    }
                 }
-
-                Log.d(TAG, "Success: ${response?.status} = ${response?.totalResults}")
 
             }
 

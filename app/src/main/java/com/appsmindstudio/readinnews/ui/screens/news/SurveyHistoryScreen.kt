@@ -163,13 +163,7 @@ fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(survey) }
-//            .then(
-//                Modifier.customBorder(
-//                    countryName == survey.country
-//                )
-//            ),
-        ,
+            .clickable { onClick(survey) },
         shape = RoundedCornerShape(10.dp),
         colors = CardColors(
             containerColor = Color(0x30D9D9D9),
@@ -202,33 +196,18 @@ fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
                     fontSize = 12.sp
                 )
             }
-            Text(
-                text = "Your name: ${survey.name}",
-                fontFamily = Fonts.regularFontFamily,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(start = 25.dp)
-            )
-            Text(
-                text = "Selected country: ${survey.countryName}",
-                fontFamily = Fonts.regularFontFamily,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(start = 25.dp)
-            )
+            TextComponent("Your name: ${survey.name}")
+            TextComponent("Selected country: ${survey.countryName}")
         }
     }
 }
 
-/*
-fun Modifier.customBorder(isEnabled: Boolean): Modifier {
-    return if (isEnabled) {
-        this.then(
-            border(
-                width = 1.dp,
-                color = Color(0x40A0A0A0),
-                shape = RoundedCornerShape(10.dp)
-            )
-        )
-    } else {
-        this
-    }
-}*/
+@Composable
+fun TextComponent(value: String) {
+    Text(
+        text = value,
+        fontFamily = Fonts.regularFontFamily,
+        fontSize = 16.sp,
+        modifier = Modifier.padding(start = 25.dp)
+    )
+}

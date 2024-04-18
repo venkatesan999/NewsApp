@@ -12,7 +12,6 @@ interface ApiService {
     @GET(BuildConfig.BASEURL + AppConstants.TOP_HEADLINES)
     suspend fun getNewsHeadline(
         @Query("country") country: String,
-        @Query("category") category: String = "business",
         @Query("apiKey") apiKey: String = BuildConfig.APIKEY
     ): Response<NewsResponse>
 }

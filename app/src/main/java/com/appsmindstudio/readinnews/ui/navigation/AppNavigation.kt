@@ -53,6 +53,7 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
                 )
             }
         }
+
         composable(
             Destinations.SURVEY_OVERVIEW_SCREEN.name + "/{name}/{countryName}",
             arguments = listOf(
@@ -81,6 +82,7 @@ fun NavGraphBuilder.news(navController: NavHostController) {
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
             NewsScreen(country = viewModel.getCountryCode(appPreferencesManager))
         }
+
         composable(Destinations.SURVEY_HISTORY_SCREEN.name) { entry ->
             val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)

@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
@@ -27,12 +26,20 @@ class NewsViewModel @Inject constructor(
 
     val connectivityObserver = NetworkConnectivityObserver(context)
 
+    private var isNewsRequestInProgress = false
+
     private val _newsHeadlines: MutableStateFlow<ResourceState<NewsResponse?>> =
         MutableStateFlow(ResourceState.Loading())
 
     val news: StateFlow<ResourceState<NewsResponse?>> = _newsHeadlines
 
     fun getNews(isInternetConnected: ConnectivityObserver.Status, country: String) {
+        if (isNewsRequestInProgress) {
+            return
+        }
+
+        isNewsRequestInProgress = true
+
         viewModelScope.launch(Dispatchers.IO) {
             if (isInternetConnected == ConnectivityObserver.Status.Available) {
                 try {
@@ -51,6 +58,8 @@ class NewsViewModel @Inject constructor(
             } else {
                 _newsHeadlines.value = ResourceState.Error(NO_INTERNET)
             }
+
+            isNewsRequestInProgress = false
         }
     }
 }

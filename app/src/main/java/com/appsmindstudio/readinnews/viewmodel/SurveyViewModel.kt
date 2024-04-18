@@ -16,8 +16,7 @@ class SurveyViewModel @Inject constructor(
     private val repository: SurveyRepository
 ) : ViewModel() {
 
-    val getAllSurvey: LiveData<List<Survey>> = repository.getAllSurvey.asLiveData()
-
+    val getAllSurvey: LiveData<List<Survey>> = repository.getAllSurvey
     fun insertSurvey(name: String, countryCode: String, countryName: String) =
         viewModelScope.launch {
             repository.insert(

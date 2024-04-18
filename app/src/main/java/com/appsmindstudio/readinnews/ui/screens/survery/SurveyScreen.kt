@@ -312,9 +312,7 @@ fun CustomSpinnerField(
                     HorizontalDivider(color = Color(0x80D9D9D9), thickness = 1.dp)
                 }
             },
-            onClick = {
-                // Handle click action for this item
-            }
+            onClick = {}
         )
         countries.forEach { country ->
             DropdownMenuItem(
