@@ -6,6 +6,7 @@ object AppPreferencesKeys {
     val name = stringPreferencesKey("name")
     val country = stringPreferencesKey("country")
     val countryCode = stringPreferencesKey("countryCode")
+    val category = stringPreferencesKey("category")
 
 }
 

@@ -44,7 +44,7 @@ import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 
 @Composable
 fun SurveyHistoryScreen(
-    navigateToNewsScreen: (name: String?, countryName: String?, countryCode: String?) -> Unit,
+    navigateToNewsScreen: (name: String?, countryName: String?, countryCode: String?, category: String?) -> Unit,
     navigateToSurveyScreen: () -> Unit,
     navigateBack: () -> Unit,
     viewModel: SurveyViewModel = hiltViewModel()
@@ -53,6 +53,7 @@ fun SurveyHistoryScreen(
     val viewModels: SharedViewModel = viewModel()
     val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
     val countryName = viewModels.getCountryCode(appPreferencesManager)
+    val category = viewModels.getCategory(appPreferencesManager)
 
     Surface(
         modifier = Modifier
@@ -108,11 +109,12 @@ fun SurveyHistoryScreen(
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(surveyList) { survey ->
                             Spacer(modifier = Modifier.height(15.dp))
-                            SurveyItem(countryName, survey, onClick = { clickedSurvey ->
+                            SurveyItem(countryName, category, survey, onClick = { clickedSurvey ->
                                 navigateToNewsScreen(
                                     clickedSurvey.name,
                                     clickedSurvey.countryName,
-                                    clickedSurvey.country
+                                    clickedSurvey.country,
+                                    clickedSurvey.category.toString()
                                 )
                             })
 
@@ -160,7 +162,7 @@ fun TakeSurveyButtonComponent(navigateToSurveyScreen: () -> Unit) {
 }
 
 @Composable
-fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
+fun SurveyItem(countryName: String, category: String, survey: Survey, onClick: (Survey) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -178,13 +180,13 @@ fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
         ) {
             Row {
                 Image(
-                    painter = painterResource(id = if (countryName == survey.country) R.drawable.live else R.drawable.news_report),
+                    painter = painterResource(id = if (countryName == survey.country && category == survey.category) R.drawable.live else R.drawable.news_report),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(
-                    text = "${survey.country}",
+                    text = "${survey.category}",
                     fontFamily = Fonts.semiBoldFontFamily,
                     fontSize = 14.sp
                 )
@@ -197,8 +199,8 @@ fun SurveyItem(countryName: String, survey: Survey, onClick: (Survey) -> Unit) {
                     fontSize = 12.sp
                 )
             }
-            TextComponent("Your name: ${survey.name}")
-            TextComponent("Selected country: ${survey.countryName}")
+            TextComponent("Name: ${survey.name}")
+            TextComponent("Country: ${survey.countryName}")
         }
     }
 }

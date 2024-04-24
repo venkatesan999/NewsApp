@@ -33,7 +33,8 @@ const val TAG = "HomeScreen"
 @Composable
 fun NewsScreen(
     newsViewModel: NewsViewModel = hiltViewModel(),
-    country: String
+    country: String,
+    category: String
 ) {
 
     OnBackPressedCall()
@@ -41,8 +42,8 @@ fun NewsScreen(
     val status by newsViewModel.connectivityObserver.observe()
         .collectAsState(initial = ConnectivityObserver.Status.Unavailable)
 
-    if (country.isNotEmpty())
-        newsViewModel.getNews(status, country.lowercase())
+    if (country.isNotEmpty() && category.isNotEmpty())
+        newsViewModel.getNews(status, country.lowercase(), category.lowercase())
 
     val newsRes by newsViewModel.news.collectAsState()
 
@@ -101,7 +102,7 @@ fun NewsScreen(
                     snackBarHostState = snackBarHostState
                 ) {
                     if (country.isNotEmpty())
-                        newsViewModel.getNews(status, country)
+                        newsViewModel.getNews(status, country, category)
                 }
 
                 Log.d(TAG, "Error: $error")

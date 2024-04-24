@@ -27,13 +27,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
-import com.appsmindstudio.readinnews.ui.screens.utils.OnBackPressedCall
+import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 
 @Composable
-fun SurveyOverViewScreen(name: String?, country: String?, navigateToNewsScreen: () -> Unit) {
-    OnBackPressedCall()
+fun SurveyOverViewScreen(
+    name: String?,
+    country: String?,
+    countryCode: String?,
+    category: String?,
+    viewModel: SurveyViewModel = hiltViewModel(),
+    navigateToNewsScreen: () -> Unit
+) {
+//    OnBackPressedCall()
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -58,7 +66,7 @@ fun SurveyOverViewScreen(name: String?, country: String?, navigateToNewsScreen: 
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Ready to read the top business headlines in $country right now",
+                    text = "Ready to read the top ${category?.lowercase()} headlines in $country right now",
                     modifier = Modifier.fillMaxWidth(),
                     fontFamily = Fonts.mediumFontFamily,
                     fontSize = 20.sp,
@@ -68,7 +76,15 @@ fun SurveyOverViewScreen(name: String?, country: String?, navigateToNewsScreen: 
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(22.dp)
-                        .clickable { navigateToNewsScreen() }
+                        .clickable {
+                            viewModel.insertSurvey(
+                                name.toString(),
+                                countryCode.toString(),
+                                country.toString(),
+                                category.toString()
+                            )
+                            navigateToNewsScreen()
+                        }
                         .border(0.7.dp, Color(0xFFFFFFFF), shape = RoundedCornerShape(6.dp))
                         .padding(horizontal = 16.dp, vertical = 12.dp))
             }

@@ -21,13 +21,15 @@ class AppPreferencesManager @Inject constructor(@ApplicationContext private val 
             name = preferences[AppPreferencesKeys.name] ?: "",
             country = preferences[AppPreferencesKeys.country] ?: "",
             countryCode = preferences[AppPreferencesKeys.countryCode] ?: "",
+            category = preferences[AppPreferencesKeys.category] ?: "",
         )
     }
 
-    suspend fun updateCountry(name: String, country: String, countryCode: String) {
+    suspend fun updateCountry(name: String, country: String, countryCode: String, category: String) {
         dataStore.insertOrUpdate(AppPreferencesKeys.name, name)
         dataStore.insertOrUpdate(AppPreferencesKeys.country, country)
         dataStore.insertOrUpdate(AppPreferencesKeys.countryCode, countryCode)
+        dataStore.insertOrUpdate(AppPreferencesKeys.category, category)
     }
 
 }

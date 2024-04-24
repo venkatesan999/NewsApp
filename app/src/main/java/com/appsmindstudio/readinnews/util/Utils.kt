@@ -20,12 +20,12 @@ object Utils {
 
     val categories =
         listOf(
-            "business",
-            "entertainment",
-            "health",
-            "science",
-            "sports",
-            "technology"
+            "Business",
+            "Entertainment",
+            "Health",
+            "Science",
+            "Sports",
+            "Technology"
         )
     inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)

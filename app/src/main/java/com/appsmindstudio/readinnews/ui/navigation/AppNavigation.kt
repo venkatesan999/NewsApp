@@ -46,29 +46,44 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
             SurveyScreen(
                 viewModel.getName(appPreferencesManager),
-                navigateSurveyOverViewScreen = { name: String, country: String, countryCode: String ->
-                    viewModel.updateCountry(name, country, countryCode, appPreferencesManager)
+                navigateSurveyOverViewScreen = { name: String, country: String, countryCode: String, category: String ->
+                    viewModel.updateCountry(
+                        name,
+                        country,
+                        countryCode,
+                        category,
+                        appPreferencesManager
+                    )
                     navController.navigate(
-                        Destinations.SURVEY_OVERVIEW_SCREEN.name + "/$name/$country"
+                        Destinations.SURVEY_OVERVIEW_SCREEN.name + "/$name/$country/$countryCode/$category"
                     )
                 }
             )
         }
 
         composable(
-            Destinations.SURVEY_OVERVIEW_SCREEN.name + "/{name}/{countryName}",
+            Destinations.SURVEY_OVERVIEW_SCREEN.name + "/{name}/{countryName}/{countryCode}/{category}",
             arguments = listOf(
                 navArgument("name") { type = NavType.StringType },
-                navArgument("countryName") { type = NavType.StringType }
+                navArgument("countryName") { type = NavType.StringType },
+                navArgument("countryCode") { type = NavType.StringType },
+                navArgument("category") { type = NavType.StringType }
             )
         ) {
             val name = it.arguments?.getString("name")
             val countryName = it.arguments?.getString("countryName")
-            SurveyOverViewScreen(name = name, country = countryName, navigateToNewsScreen = {
-                navController.navigate(
-                    Destinations.NEWS_GRAPH.name
-                )
-            })
+            val countryCode = it.arguments?.getString("countryCode")
+            val category = it.arguments?.getString("category")
+            SurveyOverViewScreen(
+                name = name,
+                country = countryName,
+                countryCode = countryCode,
+                category = category,
+                navigateToNewsScreen = {
+                    navController.navigate(
+                        Destinations.NEWS_GRAPH.name
+                    )
+                })
         }
     }
 }
@@ -81,18 +96,22 @@ fun NavGraphBuilder.news(navController: NavHostController) {
         composable(Destinations.NEWS_SCREEN.name) { entry ->
             val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
-            NewsScreen(country = viewModel.getCountryCode(appPreferencesManager))
+            NewsScreen(
+                country = viewModel.getCountryCode(appPreferencesManager),
+                category = viewModel.getCategory(appPreferencesManager)
+            )
         }
 
         composable(Destinations.SURVEY_HISTORY_SCREEN.name) { entry ->
             val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
             val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
             SurveyHistoryScreen(
-                navigateToNewsScreen = { name, countryName, countryCode ->
-                    if (name?.isNotEmpty() == true && countryName?.isNotEmpty() == true) viewModel.updateCountry(
+                navigateToNewsScreen = { name, countryName, countryCode, category ->
+                    if (name?.isNotEmpty() == true && countryName?.isNotEmpty() == true && category?.isNotEmpty() == true) viewModel.updateCountry(
                         name,
                         countryName,
                         countryCode,
+                        category,
                         appPreferencesManager
                     )
                     navController.navigate(Destinations.NEWS_SCREEN.name)

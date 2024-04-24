@@ -17,14 +17,15 @@ class SurveyViewModel @Inject constructor(
 ) : ViewModel() {
 
     val getAllSurvey: LiveData<List<Survey>> = repository.getAllSurvey
-    fun insertSurvey(name: String, countryCode: String, countryName: String) =
+    fun insertSurvey(name: String, countryCode: String, countryName: String, category: String) =
         viewModelScope.launch {
             repository.insert(
                 Survey(
                     surveyDate = getCurrentDateTime(),
                     name = name,
                     country = countryCode,
-                    countryName = countryName
+                    countryName = countryName,
+                    category = category
                 )
             )
         }

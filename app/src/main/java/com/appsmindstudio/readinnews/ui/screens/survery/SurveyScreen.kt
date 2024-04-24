@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
+import com.appsmindstudio.readinnews.util.Utils.categories
 import com.appsmindstudio.readinnews.util.Utils.countries
 import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 import kotlinx.coroutines.launch
@@ -55,12 +56,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun SurveyScreen(
     surveyName: String,
-    viewModel: SurveyViewModel = hiltViewModel(),
-    navigateSurveyOverViewScreen: (String, String, String) -> Unit
+    navigateSurveyOverViewScreen: (String, String, String, String) -> Unit
 ) {
     val name = remember { mutableStateOf(surveyName) }
     val countryCode = remember { mutableStateOf("") }
     val countryName = remember { mutableStateOf("") }
+    val category = remember { mutableStateOf("") }
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -121,32 +122,39 @@ fun SurveyScreen(
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                CustomSpinnerField(countries) { selectedCountry ->
+                CustomSpinnerField("Top 10 Biggest economies of the world in 2024", countries) { selectedCountry ->
                     countryName.value = selectedCountry.substringBeforeLast(" - ")
                     countryCode.value = selectedCountry.substringAfterLast(" - ")
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Select sub-categories",
+                    fontFamily = Fonts.mediumFontFamily,
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                CustomSpinnerField("Sub-categories", categories) { selectCategory ->
+                    category.value = selectCategory
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 LetsGoButtonComponent(modifier = Modifier
                     .fillMaxWidth()
                     .padding(22.dp)
                     .clickable {
-                        if (name.value.isNotEmpty() && countryName.value.isNotEmpty()) {
+                        if (name.value.isNotEmpty() && countryName.value.isNotEmpty() && category.value.isNotEmpty()) {
                             navigateSurveyOverViewScreen(
                                 name.value,
                                 countryName.value,
-                                countryCode.value
-                            )
-                            viewModel.insertSurvey(
-                                name.value,
                                 countryCode.value,
-                                countryName.value
+                                category.value
                             )
                         } else {
                             coroutineScope.launch {
                                 Toast
                                     .makeText(
                                         context,
-                                        "Please enter both name and country",
+                                        "Please enter your name, country, and sub-category.",
                                         Toast.LENGTH_SHORT
                                     )
                                     .show()
@@ -255,6 +263,7 @@ fun LetsGoButtonComponent(modifier: Modifier) {
 
 @Composable
 fun CustomSpinnerField(
+    title: String,
     countries: List<String>,
     onCountrySelected: (String) -> Unit
 ) {
@@ -305,7 +314,7 @@ fun CustomSpinnerField(
             text = {
                 Column {
                     Text(
-                        "Top 10 Biggest economies of the world in 2024",
+                        title,
                         fontFamily = Fonts.semiBoldFontFamily
                     )
                     Spacer(modifier = Modifier.height(10.dp))

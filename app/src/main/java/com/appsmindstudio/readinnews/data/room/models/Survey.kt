@@ -11,5 +11,6 @@ data class Survey(
     val surveyDate: String? = null,
     val name: String? = null,
     @ColumnInfo(name = "countryCode") val country: String? = null,
-    val countryName: String? = null
+    val countryName: String? = null,
+    val category: String? = null
 )

@@ -13,6 +13,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     private lateinit var appPreferencesManager: AppPreferencesManager
 
     private var getCountryCode: String = ""
+    private var getCategory: String = ""
 
     fun getCountryCode(manager: AppPreferencesManager): String {
         appPreferencesManager = manager
@@ -22,6 +23,15 @@ class SharedViewModel @Inject constructor() : ViewModel() {
             }
         }
         return getCountryCode
+    }
+ fun getCategory(manager: AppPreferencesManager): String {
+        appPreferencesManager = manager
+        viewModelScope.launch {
+            appPreferencesManager.preferencesFlow.collect { appPreferencesModel ->
+                getCategory = appPreferencesModel.category
+            }
+        }
+        return getCategory
     }
 
     fun getName(manager: AppPreferencesManager): String {
@@ -39,6 +49,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
         name: String?,
         country: String?,
         countryCode: String?,
+        category: String?,
         manager: AppPreferencesManager
     ) {
         appPreferencesManager = manager
@@ -46,7 +57,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
             appPreferencesManager.updateCountry(
                 name.toString(),
                 country.toString(),
-                countryCode.toString()
+                countryCode.toString(),
+                category.toString()
             )
         }
     }

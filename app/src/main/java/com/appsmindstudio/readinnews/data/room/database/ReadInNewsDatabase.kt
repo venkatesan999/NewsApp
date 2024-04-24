@@ -22,7 +22,8 @@ abstract class ReadInNewsDatabase : RoomDatabase() {
                             "surveyDate TEXT, " +
                             "name TEXT, " +
                             "country TEXT, " +
-                            "countryName TEXT)"
+                            "countryName TEXT, " +
+                            "category TEXT)"
                 )
             }
         }
