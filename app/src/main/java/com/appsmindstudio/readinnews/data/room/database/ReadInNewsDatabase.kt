@@ -17,7 +17,7 @@ abstract class ReadInNewsDatabase : RoomDatabase() {
         val MIGRATION_0_1 = object : Migration(0, 1) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS survey_database " +
+                    "CREATE TABLE IF NOT EXISTS survey_list " +
                             "(surveyId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                             "surveyDate TEXT, " +
                             "name TEXT, " +
