@@ -223,43 +223,28 @@ fun NewsColumnComponent(article: Article) {
             placeholder = painterResource(id = R.drawable.picture),
             error = painterResource(id = R.drawable.picture)
         )
-        Spacer(modifier = Modifier.height(5.dp))
-        MediumFontTextComponent(
-            textValue = "Publish at: ${
-                article.publishedAt.convertToDateFormat(
-                    yyyy_MM_dd_T_HH_mm_ss,
-                    MMM_dd
-                )
-            }"
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        SourceTextComponent(article.source?.name)
-        Spacer(modifier = Modifier.height(10.dp))
-        SemiBoldFontTextComponent(textValue = article.title ?: "")
-        Spacer(modifier = Modifier.height(10.dp))
-        RegularFontTextComponent(textValue = article.description ?: "")
-        Spacer(modifier = Modifier.height(10.dp))
-        ReadMoreButtonComponent(if (article.url.isNullOrEmpty()) "" else article.url)
-        Spacer(modifier = Modifier.weight(1f))
-        SpanTextComponent(article.author, if (article.author.isNullOrEmpty()) "" else "Author:")
-    }
-
-}
-
-@Composable
-fun CategoriesRowComponent() {
-    Row(
-        modifier = Modifier.horizontalScroll(rememberScrollState())
-    ) {
-        categories.forEach { category ->
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .background(color = Color.Gray, shape = RoundedCornerShape(50.dp))
-                    .padding(10.dp, end = 10.dp)
-            ) {
-                CategoryTextComponent(text = category)
-            }
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Spacer(modifier = Modifier.height(5.dp))
+            MediumFontTextComponent(
+                textValue = "Publish at: ${
+                    article.publishedAt.convertToDateFormat(
+                        yyyy_MM_dd_T_HH_mm_ss,
+                        MMM_dd
+                    )
+                }"
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            SourceTextComponent(article.source?.name)
+            Spacer(modifier = Modifier.height(10.dp))
+            SemiBoldFontTextComponent(textValue = article.title ?: "")
+            Spacer(modifier = Modifier.height(10.dp))
+            RegularFontTextComponent(textValue = article.description ?: "")
+            Spacer(modifier = Modifier.height(10.dp))
+            ReadMoreButtonComponent(if (article.url.isNullOrEmpty()) "" else article.url)
+            Spacer(modifier = Modifier.weight(1f))
+            SpanTextComponent(article.author, if (article.author.isNullOrEmpty()) "" else "Author:")
         }
     }
 }
