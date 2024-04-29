@@ -9,7 +9,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -69,7 +67,6 @@ import com.appsmindstudio.readinnews.ui.components.Fonts.regularFontFamily
 import com.appsmindstudio.readinnews.ui.navigation.Destinations
 import com.appsmindstudio.readinnews.util.AppConstants
 import com.appsmindstudio.readinnews.util.MMM_dd
-import com.appsmindstudio.readinnews.util.Utils.categories
 import com.appsmindstudio.readinnews.util.convertToDateFormat
 import com.appsmindstudio.readinnews.util.yyyy_MM_dd_T_HH_mm_ss
 
@@ -170,16 +167,6 @@ fun MediumFontTextComponent(textValue: String, centerAlign: Boolean = false) {
         fontFamily = mediumFontFamily,
         fontSize = 14.sp,
         textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
-    )
-}
-
-@Composable
-fun CategoryTextComponent(text: String) {
-    Text(
-        modifier = Modifier.padding(start = 15.dp, top = 2.dp, bottom = 2.dp, end = 15.dp),
-        text = text,
-        fontFamily = mediumFontFamily,
-        fontSize = 14.sp
     )
 }
 
