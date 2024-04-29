@@ -84,20 +84,13 @@ class AppModule {
     @Singleton
     fun providesDatabase(app: Application): ReadInNewsDatabase =
         Room.databaseBuilder(app, ReadInNewsDatabase::class.java, ReadInNewsDatabase.DATABASE_NAME)
-            .addMigrations(ReadInNewsDatabase.MIGRATION_0_1)
             .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
 
     @Provides
     @Singleton
-    fun provideSurveyDao(database: ReadInNewsDatabase): SurveyDao {
-        return database.surveyDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideSurveyRepository(surveyDao: SurveyDao): SurveyRepository {
-        return SurveyRepository(surveyDao)
+    fun provideSurveyRepository(database: ReadInNewsDatabase): SurveyRepository {
+        return SurveyRepository(database.surveyDao())
     }
 }

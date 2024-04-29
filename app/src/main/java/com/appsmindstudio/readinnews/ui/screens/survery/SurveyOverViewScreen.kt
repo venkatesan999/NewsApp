@@ -41,7 +41,6 @@ fun SurveyOverViewScreen(
     viewModel: SurveyViewModel = hiltViewModel(),
     navigateToNewsScreen: () -> Unit
 ) {
-//    OnBackPressedCall()
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
