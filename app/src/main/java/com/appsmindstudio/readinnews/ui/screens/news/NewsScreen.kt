@@ -20,7 +20,7 @@ import com.appsmindstudio.readinnews.ui.components.CustomSnackBarComponent
 import com.appsmindstudio.readinnews.ui.components.EmptyStateComponent
 import com.appsmindstudio.readinnews.ui.components.Loader
 import com.appsmindstudio.readinnews.ui.components.NewsColumnComponent
-import com.appsmindstudio.readinnews.ui.screens.utils.OnBackPressedCall
+import com.appsmindstudio.readinnews.ui.utils.OnBackPressedCall
 import com.appsmindstudio.readinnews.util.AppConstants
 import com.appsmindstudio.readinnews.util.ResourceState
 import com.appsmindstudio.readinnews.util.connectivity.ConnectivityObserver

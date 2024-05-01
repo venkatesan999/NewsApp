@@ -1,4 +1,4 @@
-package com.appsmindstudio.readinnews.ui.screens.survery
+package com.appsmindstudio.readinnews.ui.screens.survey
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
 import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 
 @Composable
@@ -41,6 +43,8 @@ fun SurveyOverViewScreen(
     viewModel: SurveyViewModel = hiltViewModel(),
     navigateToNewsScreen: () -> Unit
 ) {
+
+    val context = LocalContext.current
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -83,6 +87,11 @@ fun SurveyOverViewScreen(
                                 category.toString()
                             )
                             navigateToNewsScreen()
+                            SharedPreferencesUtil.setUserName(
+                                context = context,
+                                key = "userName",
+                                value = name.toString()
+                            )
                         }
                         .border(0.7.dp, Color(0xFFFFFFFF), shape = RoundedCornerShape(6.dp))
                         .padding(horizontal = 16.dp, vertical = 12.dp))
@@ -113,7 +122,7 @@ fun ReadNewsButtonComponent(modifier: Modifier) {
                 painter = painterResource(id = R.drawable.arrow),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                colorFilter = ColorFilter.tint(Color(0xFF2602AE))
+                colorFilter = ColorFilter.tint(color = Color.White)
             )
         }
     }

@@ -16,8 +16,8 @@ import androidx.navigation.navigation
 import com.appsmindstudio.readinnews.data.local.preferences.pref_manager.AppPreferencesManager
 import com.appsmindstudio.readinnews.ui.screens.news.NewsScreen
 import com.appsmindstudio.readinnews.ui.screens.news.SurveyHistoryScreen
-import com.appsmindstudio.readinnews.ui.screens.survery.SurveyOverViewScreen
-import com.appsmindstudio.readinnews.ui.screens.survery.SurveyScreen
+import com.appsmindstudio.readinnews.ui.screens.survey.SurveyOverViewScreen
+import com.appsmindstudio.readinnews.ui.screens.survey.SurveyScreen
 import com.appsmindstudio.readinnews.viewmodel.SharedViewModel
 
 
@@ -29,7 +29,7 @@ enum class Destinations {
 fun AppNavigation(navController: NavHostController, isAlreadySurveyTaken: Boolean = false) {
     NavHost(
         navController,
-        if (isAlreadySurveyTaken) Destinations.NEWS_GRAPH.name else Destinations.SURVEY_GRAPH.name
+        if (isAlreadySurveyTaken) Destinations.SURVEY_GRAPH.name else Destinations.NEWS_GRAPH.name
     ) {
         news(navController)
         survey(navController)

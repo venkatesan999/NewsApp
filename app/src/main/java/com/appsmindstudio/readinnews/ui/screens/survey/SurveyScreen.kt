@@ -1,4 +1,4 @@
-package com.appsmindstudio.readinnews.ui.screens.survery
+package com.appsmindstudio.readinnews.ui.screens.survey
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -45,12 +46,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
 import com.appsmindstudio.readinnews.util.Utils.categories
 import com.appsmindstudio.readinnews.util.Utils.countries
-import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -179,7 +178,7 @@ fun CustomShapeOutlinedTextField(
     Box(
         modifier = Modifier
             .background(
-                color = Color(0xf4f5f6f6), // You can use Color.Gray for this
+                color = colorResource(id = R.color.field_bg_color), // You can use Color.Gray for this
                 shape = RoundedCornerShape(10.dp)
             )
     ) {
@@ -246,7 +245,7 @@ fun LetsGoButtonComponent(modifier: Modifier) {
             Text(
                 text = "Lets go",
                 textAlign = TextAlign.Center,
-                color = Color(0xFF2602AE),
+                color = colorResource(id = R.color.button_color),
                 fontFamily = Fonts.mediumFontFamily,
                 fontSize = 16.sp
             )
@@ -255,7 +254,7 @@ fun LetsGoButtonComponent(modifier: Modifier) {
                 painter = painterResource(id = R.drawable.arrow),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                colorFilter = ColorFilter.tint(Color(0xFF2602AE))
+                colorFilter = ColorFilter.tint(color = colorResource(id = R.color.button_color))
             )
         }
     }
@@ -276,7 +275,7 @@ fun CustomSpinnerField(
                 isDropdownExpanded = !isDropdownExpanded
             }
             .background(
-                color = Color(0xf4f5f6f6), // You can use Color.Gray for this
+                color = colorResource(id = R.color.field_bg_color), // You can use Color.Gray for this
                 shape = RoundedCornerShape(10.dp)
             )
     ) {

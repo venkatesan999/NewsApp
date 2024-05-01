@@ -1,5 +1,6 @@
 package com.appsmindstudio.readinnews.ui.screens
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,26 +8,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.appsmindstudio.readinnews.data.room.models.Survey
 import com.appsmindstudio.readinnews.ui.components.DragComponent
 import com.appsmindstudio.readinnews.ui.navigation.AppNavigation
 import com.appsmindstudio.readinnews.ui.theme.NewsInShortTheme
-import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
         setContent {
             Surface(
                 modifier = Modifier
@@ -35,8 +31,19 @@ class MainActivity : ComponentActivity() {
             ) {
                 val navController = rememberNavController()
                 NewsInShortTheme {
-                    AppEntryPoint(navController)
-                    DragComponent(navController)
+                    val isOnBoardScreenEnabled = SharedPreferencesUtil.getBoolean(
+                        context = this@MainActivity,
+                        key = "isOnBoardScreenEnabled"
+                    )
+                    if (isOnBoardScreenEnabled) {
+                        AppEntryPoint(navController)
+                        DragComponent(navController)
+                    } else {
+                        val intent =
+                            Intent(this@MainActivity, OnBoardActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
             }
         }
@@ -45,7 +52,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppEntryPoint(navController: NavHostController) {
-    val viewModel: SurveyViewModel = viewModel()
-    val surveyList: List<Survey> by viewModel.getAllSurvey.observeAsState(initial = emptyList())
-    AppNavigation(navController, surveyList.isNotEmpty())
+    val context = LocalContext.current
+    val userName = SharedPreferencesUtil.getUserName(
+        context = context,
+        key = "userName"
+    )
+    AppNavigation(navController, userName.isNullOrEmpty())
 }

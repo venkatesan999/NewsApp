@@ -46,6 +46,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -279,7 +280,7 @@ fun ReadMoreButtonComponent(url: String?) {
             Text(
                 text = "Read more",
                 textAlign = TextAlign.Center,
-                color = Color(0xFF2602AE),
+                color = colorResource(id = R.color.button_color),
                 fontFamily = mediumFontFamily
             )
             Spacer(modifier = Modifier.width(8.dp)) // Add space between text and image
@@ -287,7 +288,7 @@ fun ReadMoreButtonComponent(url: String?) {
                 painter = painterResource(id = R.drawable.arrow),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                colorFilter = ColorFilter.tint(Color(0xFF2602AE))
+                colorFilter = ColorFilter.tint(color = colorResource(id = R.color.button_color))
             )
         }
     }
