@@ -1,8 +1,6 @@
 package com.appsmindstudio.readinnews.util
 
-import android.os.Build
-import android.os.Bundle
-import android.os.Parcelable
+import com.appsmindstudio.readinnews.R
 
 object Utils {
     val countries = listOf(
@@ -27,8 +25,10 @@ object Utils {
             "Sports",
             "Technology"
         )
-    inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
-        Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
-        else -> @Suppress("DEPRECATION") getParcelable(key) as? T
-    }
+
+    val staticOnBoardList = listOf(
+        R.drawable.screen1,
+        R.drawable.screen2,
+        R.drawable.screen3,
+    )
 }

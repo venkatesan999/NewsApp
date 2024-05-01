@@ -43,7 +43,7 @@ import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
 import com.appsmindstudio.readinnews.ui.theme.NewsInShortTheme
 import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
-import com.appsmindstudio.readinnews.util.StaticOnBoardList.staticOnBoardList
+import com.appsmindstudio.readinnews.util.Utils.staticOnBoardList
 
 class OnBoardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,7 +134,7 @@ fun OnBoardComponent() {
             Spacer(modifier = Modifier.width(25.dp))
         }
         items(staticOnBoardList.size) { index ->
-            staticOnBoardList[index].Image?.let { OnboardComponent(it) }
+            OnboardComponent(staticOnBoardList[index])
         }
         item {
             Spacer(modifier = Modifier.width(25.dp))

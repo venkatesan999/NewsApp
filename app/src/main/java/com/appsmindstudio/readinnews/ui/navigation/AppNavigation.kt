@@ -1,11 +1,8 @@
 package com.appsmindstudio.readinnews.ui.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -13,12 +10,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.appsmindstudio.readinnews.data.local.preferences.pref_manager.AppPreferencesManager
 import com.appsmindstudio.readinnews.ui.screens.news.NewsScreen
 import com.appsmindstudio.readinnews.ui.screens.news.SurveyHistoryScreen
 import com.appsmindstudio.readinnews.ui.screens.survey.SurveyOverViewScreen
 import com.appsmindstudio.readinnews.ui.screens.survey.SurveyScreen
-import com.appsmindstudio.readinnews.viewmodel.SharedViewModel
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 enum class Destinations {
@@ -26,34 +26,33 @@ enum class Destinations {
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController, isAlreadySurveyTaken: Boolean = false) {
+fun AppNavigation(
+    context: Context,
+    navController: NavHostController,
+    isAlreadySurveyTaken: Boolean = false
+) {
+    val coroutineScope = rememberCoroutineScope()
     NavHost(
         navController,
         if (isAlreadySurveyTaken) Destinations.SURVEY_GRAPH.name else Destinations.NEWS_GRAPH.name
     ) {
-        news(navController)
-        survey(navController)
+        news(navController, context, coroutineScope)
+        survey(navController, context, coroutineScope)
     }
 }
 
-fun NavGraphBuilder.survey(navController: NavHostController) {
+fun NavGraphBuilder.survey(
+    navController: NavHostController,
+    context: Context,
+    coroutineScope: CoroutineScope
+) {
     navigation(
         startDestination = Destinations.SURVEY_SCREEN.name,
         route = Destinations.SURVEY_GRAPH.name
     ) {
-        composable(Destinations.SURVEY_SCREEN.name) { entry ->
-            val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
-            val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
+        composable(Destinations.SURVEY_SCREEN.name) {
             SurveyScreen(
-                viewModel.getName(appPreferencesManager),
                 navigateSurveyOverViewScreen = { name: String, country: String, countryCode: String, category: String ->
-                    viewModel.updateCountry(
-                        name,
-                        country,
-                        countryCode,
-                        category,
-                        appPreferencesManager
-                    )
                     navController.navigate(
                         Destinations.SURVEY_OVERVIEW_SCREEN.name + "/$name/$country/$countryCode/$category"
                     )
@@ -80,6 +79,13 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
                 countryCode = countryCode,
                 category = category,
                 navigateToNewsScreen = {
+                    coroutineScope.launch {
+                        updateInSharedPreference(
+                            context,
+                            countryCodeValue = countryCode.toString(),
+                            categoryValue = category.toString()
+                        )
+                    }
                     navController.navigate(
                         Destinations.NEWS_GRAPH.name
                     )
@@ -88,33 +94,35 @@ fun NavGraphBuilder.survey(navController: NavHostController) {
     }
 }
 
-fun NavGraphBuilder.news(navController: NavHostController) {
+fun NavGraphBuilder.news(
+    navController: NavHostController,
+    context: Context,
+    coroutineScope: CoroutineScope
+) {
     navigation(
         startDestination = Destinations.NEWS_SCREEN.name,
         route = Destinations.NEWS_GRAPH.name
     ) {
-        composable(Destinations.NEWS_SCREEN.name) { entry ->
-            val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
-            val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
-            NewsScreen(
-                country = viewModel.getCountryCode(appPreferencesManager),
-                category = viewModel.getCategory(appPreferencesManager)
-            )
+        composable(Destinations.NEWS_SCREEN.name) { _ ->
+            NewsScreen()
         }
 
-        composable(Destinations.SURVEY_HISTORY_SCREEN.name) { entry ->
-            val viewModel = entry.sharedViewModel<SharedViewModel>(navController = navController)
-            val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
+        composable(Destinations.SURVEY_HISTORY_SCREEN.name) {
             SurveyHistoryScreen(
                 navigateToNewsScreen = { name, countryName, countryCode, category ->
-                    if (name?.isNotEmpty() == true && countryName?.isNotEmpty() == true && category?.isNotEmpty() == true) viewModel.updateCountry(
-                        name,
-                        countryName,
-                        countryCode,
-                        category,
-                        appPreferencesManager
-                    )
-                    navController.navigate(Destinations.NEWS_SCREEN.name)
+                    if (name?.isNotEmpty() == true
+                        && countryName?.isNotEmpty() == true
+                        && category?.isNotEmpty() == true
+                    ) {
+                        coroutineScope.launch {
+                            updateInSharedPreference(
+                                context,
+                                countryCodeValue = countryCode.toString(),
+                                categoryValue = category.toString()
+                            )
+                        }
+                        navController.navigate(Destinations.NEWS_SCREEN.name)
+                    }
                 },
                 navigateToSurveyScreen = { navController.navigate(Destinations.SURVEY_SCREEN.name) },
                 navigateBack = { navController.popBackStack() })
@@ -122,13 +130,18 @@ fun NavGraphBuilder.news(navController: NavHostController) {
     }
 }
 
-@Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
-    navController: NavHostController
-): T {
-    val navGraphRoute = destination.parent?.route ?: return viewModel()
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
+suspend fun updateInSharedPreference(
+    context: Context,
+    countryCodeValue: String,
+    categoryValue: String
+) {
+    withContext(Dispatchers.IO) {
+        SharedPreferencesUtil.setCodeCategories(
+            context = context,
+            countryCode = "countryCode",
+            countryCodeValue = countryCodeValue,
+            category = "category",
+            categoryValue = categoryValue
+        )
     }
-    return viewModel(parentEntry)
 }

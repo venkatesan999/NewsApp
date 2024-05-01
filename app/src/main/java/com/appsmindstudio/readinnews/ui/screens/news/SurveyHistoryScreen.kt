@@ -35,12 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appsmindstudio.readinnews.R
-import com.appsmindstudio.readinnews.data.local.preferences.pref_manager.AppPreferencesManager
-import com.appsmindstudio.readinnews.data.room.models.Survey
+import com.appsmindstudio.readinnews.data.room.SurveyEntity
 import com.appsmindstudio.readinnews.ui.components.Fonts
-import com.appsmindstudio.readinnews.viewmodel.SharedViewModel
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
 import com.appsmindstudio.readinnews.viewmodel.SurveyViewModel
 
 @Composable
@@ -51,10 +49,11 @@ fun SurveyHistoryScreen(
     viewModel: SurveyViewModel = hiltViewModel()
 ) {
 
-    val viewModels: SharedViewModel = viewModel()
-    val appPreferencesManager = AppPreferencesManager(context = LocalContext.current)
-    val countryName = viewModels.getCountryCode(appPreferencesManager)
-    val category = viewModels.getCategory(appPreferencesManager)
+    val (countryCode, category) = SharedPreferencesUtil.getCodeCategories(
+        LocalContext.current,
+        "countryCode",
+        "category"
+    )
 
     Surface(
         modifier = Modifier
@@ -105,20 +104,24 @@ fun SurveyHistoryScreen(
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    val surveyList: List<Survey> by viewModel.getAllSurvey.observeAsState(
+                    val surveyList: List<SurveyEntity> by viewModel.getAllSurvey.observeAsState(
                         initial = emptyList()
                     )
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(surveyList) { survey ->
                             Spacer(modifier = Modifier.height(15.dp))
-                            SurveyItem(countryName, category, survey, onClick = { clickedSurvey ->
-                                navigateToNewsScreen(
-                                    clickedSurvey.name,
-                                    clickedSurvey.countryName,
-                                    clickedSurvey.country,
-                                    clickedSurvey.category.toString()
-                                )
-                            })
+                            SurveyItem(
+                                countryCode.toString(),
+                                category.toString(),
+                                survey,
+                                onClick = { clickedSurvey ->
+                                    navigateToNewsScreen(
+                                        clickedSurvey.name,
+                                        clickedSurvey.countryName,
+                                        clickedSurvey.country,
+                                        clickedSurvey.category.toString()
+                                    )
+                                })
 
                         }
                     }
@@ -164,7 +167,12 @@ fun TakeSurveyButtonComponent(navigateToSurveyScreen: () -> Unit) {
 }
 
 @Composable
-fun SurveyItem(countryName: String, category: String, survey: Survey, onClick: (Survey) -> Unit) {
+fun SurveyItem(
+    countryName: String,
+    category: String,
+    survey: SurveyEntity,
+    onClick: (SurveyEntity) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

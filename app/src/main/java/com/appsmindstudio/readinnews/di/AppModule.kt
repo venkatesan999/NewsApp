@@ -6,10 +6,9 @@ import com.appsmindstudio.readinnews.BuildConfig
 import com.appsmindstudio.readinnews.data.api.ApiService
 import com.appsmindstudio.readinnews.data.api.datasource.NewsDataSource
 import com.appsmindstudio.readinnews.data.api.datasource.NewsDataSourceImpl
-import com.appsmindstudio.readinnews.data.room.dao.SurveyDao
-import com.appsmindstudio.readinnews.data.room.database.ReadInNewsDatabase
-import com.appsmindstudio.readinnews.data.api.repository.NewsRepository
-import com.appsmindstudio.readinnews.data.room.repository.SurveyRepository
+import com.appsmindstudio.readinnews.data.repository.NewsRepository
+import com.appsmindstudio.readinnews.data.repository.SurveyRepository
+import com.appsmindstudio.readinnews.data.room.ReadInNewsDatabase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -64,21 +63,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {  // Defining API endpoints related to weather data
-        return retrofit.create(ApiService::class.java)
-    }
+    fun provideApiService(retrofit: Retrofit): ApiService =
+        // Defining API endpoints related to weather data
+        retrofit.create(ApiService::class.java)
 
     @Provides
     @Singleton
-    fun provideNewsDataSource(apiService: ApiService): NewsDataSource {
-        return NewsDataSourceImpl(apiService)
-    }
+    fun provideNewsDataSource(apiService: ApiService): NewsDataSource =
+        NewsDataSourceImpl(apiService)
 
     @Provides
     @Singleton
-    fun provideNewsRepository(dataSource: NewsDataSource): NewsRepository {
-        return NewsRepository(dataSource)
-    }
+    fun provideNewsRepository(dataSource: NewsDataSource): NewsRepository =
+        NewsRepository(dataSource)
 
     @Provides
     @Singleton
@@ -90,7 +87,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSurveyRepository(database: ReadInNewsDatabase): SurveyRepository {
-        return SurveyRepository(database.surveyDao())
-    }
+    fun provideSurveyRepository(database: ReadInNewsDatabase): SurveyRepository =
+        SurveyRepository(database.surveyDao())
+
 }

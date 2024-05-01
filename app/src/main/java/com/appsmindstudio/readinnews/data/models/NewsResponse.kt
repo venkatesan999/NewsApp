@@ -1,4 +1,4 @@
-package com.appsmindstudio.readinnews.data.api.api_models
+package com.appsmindstudio.readinnews.data.models
 
 data class NewsResponse(
     val status: String? = null,

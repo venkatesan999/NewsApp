@@ -57,5 +57,5 @@ fun AppEntryPoint(navController: NavHostController) {
         context = context,
         key = "userName"
     )
-    AppNavigation(navController, userName.isNullOrEmpty())
+    AppNavigation(context, navController, userName.isNullOrEmpty())
 }

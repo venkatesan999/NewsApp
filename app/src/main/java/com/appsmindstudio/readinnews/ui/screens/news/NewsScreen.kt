@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsmindstudio.readinnews.ui.components.CustomSnackBarComponent
@@ -23,6 +24,7 @@ import com.appsmindstudio.readinnews.ui.components.NewsColumnComponent
 import com.appsmindstudio.readinnews.ui.utils.OnBackPressedCall
 import com.appsmindstudio.readinnews.util.AppConstants
 import com.appsmindstudio.readinnews.util.ResourceState
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
 import com.appsmindstudio.readinnews.util.connectivity.ConnectivityObserver
 import com.appsmindstudio.readinnews.viewmodel.NewsViewModel
 
@@ -31,18 +33,22 @@ const val TAG = "HomeScreen"
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewsScreen(
-    newsViewModel: NewsViewModel = hiltViewModel(),
-    country: String,
-    category: String
+    newsViewModel: NewsViewModel = hiltViewModel()
 ) {
 
     OnBackPressedCall()
 
+    val (countryCode, category) = SharedPreferencesUtil.getCodeCategories(
+        LocalContext.current,
+        "countryCode",
+        "category"
+    )
+
     val status by newsViewModel.connectivityObserver.observe()
         .collectAsState(initial = ConnectivityObserver.Status.Unavailable)
 
-    if (country.isNotEmpty() && category.isNotEmpty())
-        newsViewModel.getNews(status, country.lowercase(), category.lowercase())
+    if (countryCode?.isNotEmpty() == true && category?.isNotEmpty() == true)
+        newsViewModel.getNews(status, countryCode.lowercase(), category.lowercase())
 
     val newsRes by newsViewModel.news.collectAsState()
 
@@ -99,8 +105,8 @@ fun NewsScreen(
                     snackBarMessage = error,
                     snackBarHostState = snackBarHostState
                 ) {
-                    if (country.isNotEmpty())
-                        newsViewModel.getNews(status, country, category)
+                    if (countryCode?.isNotEmpty() == true && category?.isNotEmpty() == true)
+                        newsViewModel.getNews(status, countryCode, category)
                 }
 
                 Log.d(TAG, "Error: $error")

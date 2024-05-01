@@ -48,22 +48,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.ui.components.Fonts
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
 import com.appsmindstudio.readinnews.util.Utils.categories
 import com.appsmindstudio.readinnews.util.Utils.countries
 import kotlinx.coroutines.launch
 
 @Composable
 fun SurveyScreen(
-    surveyName: String,
     navigateSurveyOverViewScreen: (String, String, String, String) -> Unit
 ) {
-    val name = remember { mutableStateOf(surveyName) }
-    val countryCode = remember { mutableStateOf("") }
-    val countryName = remember { mutableStateOf("") }
-    val category = remember { mutableStateOf("") }
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val name = remember { mutableStateOf(SharedPreferencesUtil.getUserName(context, "userName")) }
+    val countryCode = remember { mutableStateOf("") }
+    val countryName = remember { mutableStateOf("") }
+    val category = remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier
@@ -110,7 +110,7 @@ fun SurveyScreen(
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                CustomShapeOutlinedTextField("here...", name.value) { nameValues ->
+                CustomShapeOutlinedTextField("here...", name.value.toString()) { nameValues ->
                     name.value = nameValues
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -121,7 +121,10 @@ fun SurveyScreen(
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                CustomSpinnerField("Top 10 Biggest economies of the world in 2024", countries) { selectedCountry ->
+                CustomSpinnerField(
+                    "Top 10 Biggest economies of the world in 2024",
+                    countries
+                ) { selectedCountry ->
                     countryName.value = selectedCountry.substringBeforeLast(" - ")
                     countryCode.value = selectedCountry.substringAfterLast(" - ")
                 }
@@ -141,9 +144,9 @@ fun SurveyScreen(
                     .fillMaxWidth()
                     .padding(22.dp)
                     .clickable {
-                        if (name.value.isNotEmpty() && countryName.value.isNotEmpty() && category.value.isNotEmpty()) {
+                        if (name.value.toString().isNotEmpty() && countryName.value.isNotEmpty() && category.value.isNotEmpty()) {
                             navigateSurveyOverViewScreen(
-                                name.value,
+                                name.value.toString(),
                                 countryName.value,
                                 countryCode.value,
                                 category.value

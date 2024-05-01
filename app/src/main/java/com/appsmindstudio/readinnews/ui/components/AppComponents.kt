@@ -62,7 +62,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.appsmindstudio.readinnews.R
-import com.appsmindstudio.readinnews.data.api.api_models.Article
+import com.appsmindstudio.readinnews.data.models.Article
 import com.appsmindstudio.readinnews.ui.components.Fonts.mediumFontFamily
 import com.appsmindstudio.readinnews.ui.components.Fonts.regularFontFamily
 import com.appsmindstudio.readinnews.ui.navigation.Destinations
