@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -55,7 +56,14 @@ class OnBoardActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .paint(
+                                painterResource(id = R.drawable.news_bg),
+                                contentScale = ContentScale.FillBounds
+                            )
+                    ) {
                         Column(
                             modifier = Modifier.align(Alignment.TopCenter),
                             verticalArrangement = Arrangement.Top,
@@ -91,7 +99,7 @@ class OnBoardActivity : ComponentActivity() {
                                 }
                                 .border(
                                     1.dp,
-                                    Color(0xFFEFEEF2),
+                                    Color(0xFFC9BA98),
                                     shape = RoundedCornerShape(6.dp)
                                 )
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -104,8 +112,9 @@ class OnBoardActivity : ComponentActivity() {
                                 Text(
                                     text = "Quicken",
                                     textAlign = TextAlign.Center,
-                                    color = colorResource(id = R.color.black),
+                                    color = Color(0xFFF4DBAE),
                                     fontFamily = Fonts.mediumFontFamily,
+                                    fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Spacer(modifier = Modifier.width(8.dp)) // Add space between text and image
@@ -113,7 +122,7 @@ class OnBoardActivity : ComponentActivity() {
                                     painter = painterResource(id = R.drawable.arrow),
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp),
-                                    colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
+                                    colorFilter = ColorFilter.tint(Color(0xFFF4DBAE))
                                 )
                             }
                         }

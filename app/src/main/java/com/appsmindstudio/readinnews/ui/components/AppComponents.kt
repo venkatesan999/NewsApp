@@ -167,6 +167,7 @@ fun MediumFontTextComponent(textValue: String, centerAlign: Boolean = false) {
         text = textValue,
         fontFamily = mediumFontFamily,
         fontSize = 14.sp,
+        color = colorResource(id = R.color.black),
         textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
     )
 }
@@ -179,6 +180,7 @@ fun RegularFontTextComponent(textValue: String, centerAlign: Boolean = false) {
         text = textValue,
         fontFamily = regularFontFamily,
         fontSize = 16.sp,
+        color = colorResource(id = R.color.black),
         textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
     )
 }
@@ -191,6 +193,7 @@ fun SemiBoldFontTextComponent(textValue: String, centerAlign: Boolean = false) {
         text = textValue,
         fontFamily = Fonts.semiBoldFontFamily,
         fontSize = 20.sp,
+        color = colorResource(id = R.color.black),
         textAlign = if (centerAlign) TextAlign.Center else TextAlign.Start
     )
 }
@@ -305,6 +308,7 @@ fun SpanTextComponent(name: String?, spanText: String) {
     Text(
         fontFamily = regularFontFamily,
         fontSize = 16.sp,
+        color = colorResource(id = R.color.black),
         text = annotatedString,
         textAlign = TextAlign.Start
     )

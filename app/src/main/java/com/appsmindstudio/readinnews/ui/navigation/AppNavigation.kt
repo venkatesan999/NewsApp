@@ -50,6 +50,7 @@ fun NavGraphBuilder.survey(
         startDestination = Destinations.SURVEY_SCREEN.name,
         route = Destinations.SURVEY_GRAPH.name
     ) {
+
         composable(Destinations.SURVEY_SCREEN.name) {
             SurveyScreen(
                 navigateSurveyOverViewScreen = { name: String, country: String, countryCode: String, category: String ->
@@ -103,6 +104,7 @@ fun NavGraphBuilder.news(
         startDestination = Destinations.NEWS_SCREEN.name,
         route = Destinations.NEWS_GRAPH.name
     ) {
+
         composable(Destinations.NEWS_SCREEN.name) { _ ->
             NewsScreen()
         }

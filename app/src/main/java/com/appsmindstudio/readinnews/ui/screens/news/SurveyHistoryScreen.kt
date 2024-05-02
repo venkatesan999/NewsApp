@@ -151,7 +151,7 @@ fun TakeSurveyButtonComponent(navigateToSurveyScreen: () -> Unit) {
             Text(
                 text = "Take survey",
                 textAlign = TextAlign.Center,
-                color = Color(0xFF2602AE),
+                color = colorResource(id = R.color.button_color),
                 fontFamily = Fonts.mediumFontFamily,
                 fontSize = 16.sp
             )
@@ -160,7 +160,7 @@ fun TakeSurveyButtonComponent(navigateToSurveyScreen: () -> Unit) {
                 painter = painterResource(id = R.drawable.arrow),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                colorFilter = ColorFilter.tint(Color(0xFF2602AE))
+                colorFilter = ColorFilter.tint(colorResource(id = R.color.button_color))
             )
         }
     }
@@ -180,7 +180,7 @@ fun SurveyItem(
         shape = RoundedCornerShape(10.dp),
         colors = CardColors(
             containerColor = Color(0x30D9D9D9),
-            contentColor = Color(0xFF000000),
+            contentColor = colorResource(id = R.color.black),
             disabledContainerColor = Color(0x30D9D9D9),
             disabledContentColor = Color(0xFF000000)
         )
@@ -205,7 +205,7 @@ fun SurveyItem(
                     text = "${survey.surveyDate}",
                     textAlign = TextAlign.End,
                     fontFamily = Fonts.mediumFontFamily,
-                    color = Color(0x50000000),
+                    color = colorResource(id = R.color.survey_date),
                     fontSize = 12.sp
                 )
             }

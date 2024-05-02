@@ -27,8 +27,8 @@ object Utils {
         )
 
     val staticOnBoardList = listOf(
-        R.drawable.screen1,
-        R.drawable.screen2,
-        R.drawable.screen3,
+        R.drawable.new1,
+        R.drawable.new2,
+        R.drawable.new3,
     )
 }

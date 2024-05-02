@@ -9,4 +9,6 @@
     <color name="white">#FF000000</color> <!-- Change the background color to black in night mode -->
     <color name="field_bg_color">#FF29292A</color>
     <color name="button_color">#FFFFFFFF</color>
+    <color name="card_bg">#FF29292A</color>
+    <color name="survey_date">#50FFFFFF</color>
 </resources>
