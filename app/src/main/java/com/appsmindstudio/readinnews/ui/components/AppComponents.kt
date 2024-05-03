@@ -220,8 +220,8 @@ fun NewsColumnComponent(article: Article) {
             model = article.urlToImage,
             contentDescription = "",
             contentScale = ContentScale.FillHeight,
-            placeholder = painterResource(id = R.drawable.no_photo),
-            error = painterResource(id = R.drawable.no_photo)
+            placeholder = painterResource(id = R.drawable.no_image),
+            error = painterResource(id = R.drawable.no_image)
         )
 
         Column(

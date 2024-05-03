@@ -109,8 +109,7 @@ fun NewsContent(context: Context, response: NewsResponse) {
             VerticalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
-                pageSize = PageSize.Fill,
-                pageSpacing = (-50).dp
+                pageSize = PageSize.Fill
             ) { page: Int ->
                 val article = response.articles.getOrNull(page)
                 if (article != null) NewsColumnComponent(article)
