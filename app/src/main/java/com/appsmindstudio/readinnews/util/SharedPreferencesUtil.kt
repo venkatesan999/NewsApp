@@ -39,4 +39,12 @@ object SharedPreferencesUtil {
         return Pair(value1, value2)
     }
 
+    fun setSwipeUp(context: Context, key: String, value: Boolean) {
+        getSharedPreferences(context).edit().putBoolean(key, value).apply()
+    }
+
+    fun getSwipeUp(context: Context, key: String): Boolean {
+        return getSharedPreferences(context).getBoolean(key, false)
+    }
+
 }

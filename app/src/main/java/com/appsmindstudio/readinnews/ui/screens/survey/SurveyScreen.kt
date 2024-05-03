@@ -144,7 +144,10 @@ fun SurveyScreen(
                     .fillMaxWidth()
                     .padding(22.dp)
                     .clickable {
-                        if (name.value.toString().isNotEmpty() && countryName.value.isNotEmpty() && category.value.isNotEmpty()) {
+                        if (name.value
+                                .toString()
+                                .isNotEmpty() && countryName.value.isNotEmpty() && category.value.isNotEmpty()
+                        ) {
                             navigateSurveyOverViewScreen(
                                 name.value.toString(),
                                 countryName.value,
@@ -287,7 +290,7 @@ fun CustomSpinnerField(
         ) {
             Text(
                 text = text.ifEmpty { "Select" },
-                color = if (text.isEmpty()) Color.Gray else Color.Black, // Change color to gray when hint text is shown
+                color = if (text.isEmpty()) Color.Gray else colorResource(id = R.color.black), // Change color to gray when hint text is shown
                 fontFamily = Fonts.regularFontFamily,
                 fontSize = 16.sp,
                 modifier = Modifier

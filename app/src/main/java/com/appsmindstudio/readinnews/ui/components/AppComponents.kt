@@ -1,6 +1,7 @@
 package com.appsmindstudio.readinnews.ui.components
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -42,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -58,9 +60,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.SimpleColorFilter
+import com.airbnb.lottie.model.KeyPath
+import com.airbnb.lottie.value.LottieValueCallback
 import com.appsmindstudio.readinnews.R
 import com.appsmindstudio.readinnews.data.models.Article
 import com.appsmindstudio.readinnews.ui.components.Fonts.mediumFontFamily
@@ -207,17 +216,18 @@ fun NewsColumnComponent(article: Article) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(240.dp),
+                .height(250.dp),
             model = article.urlToImage,
             contentDescription = "",
             contentScale = ContentScale.FillHeight,
-            placeholder = painterResource(id = R.drawable.picture),
-            error = painterResource(id = R.drawable.picture)
+            placeholder = painterResource(id = R.drawable.no_photo),
+            error = painterResource(id = R.drawable.no_photo)
         )
+
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .padding(10.dp)
         ) {
-            Spacer(modifier = Modifier.height(5.dp))
             MediumFontTextComponent(
                 textValue = "Publish at: ${
                     article.publishedAt.convertToDateFormat(
@@ -230,12 +240,19 @@ fun NewsColumnComponent(article: Article) {
             SourceTextComponent(article.source?.name)
             Spacer(modifier = Modifier.height(10.dp))
             SemiBoldFontTextComponent(textValue = article.title ?: "")
+
+            article.description?.let {
+                Spacer(modifier = Modifier.height(10.dp))
+                RegularFontTextComponent(textValue = it)
+            }
+
+            article.author?.let {
+                Spacer(modifier = Modifier.height(10.dp))
+                SpanTextComponent(it, if (it.isNotEmpty()) "Author:" else "")
+            }
+
             Spacer(modifier = Modifier.height(10.dp))
-            RegularFontTextComponent(textValue = article.description ?: "")
-            Spacer(modifier = Modifier.height(10.dp))
-            ReadMoreButtonComponent(if (article.url.isNullOrEmpty()) "" else article.url)
-            Spacer(modifier = Modifier.weight(1f))
-            SpanTextComponent(article.author, if (article.author.isNullOrEmpty()) "" else "Author:")
+            ReadMoreButtonComponent(article.url ?: "")
         }
     }
 }
@@ -354,7 +371,7 @@ fun DragComponent(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(end = 10.dp, bottom = 50.dp)
+                .padding(end = 15.dp, bottom = 50.dp)
         ) {
             Box(
                 modifier = Modifier
@@ -394,4 +411,36 @@ fun DragComponent(navController: NavHostController) {
 fun NewsRowComponentPreview() {
     val article = Article("Top Headlines", "News Reader", "XYZ")
     NewsColumnComponent(article = article)
+}
+
+@Composable
+fun LottieAnimation(
+    context: Context,
+    animationResId: Int,
+    modifier: Modifier = Modifier,
+    color: Color? = null
+) {
+    val animationView = remember {
+        LottieAnimationView(context).apply {
+            setAnimation(animationResId)
+            repeatCount = LottieDrawable.INFINITE
+            color?.let {
+                val colorInt = it.toArgb()
+                val colorFilter = SimpleColorFilter(colorInt)
+                addValueCallback(
+                    KeyPath("**"),
+                    LottieProperty.COLOR_FILTER,
+                    LottieValueCallback(colorFilter)
+                )
+            }
+        }
+    }
+
+    AndroidView(
+        modifier = modifier,
+        factory = { animationView },
+        update = {
+            it.playAnimation()
+        }
+    )
 }

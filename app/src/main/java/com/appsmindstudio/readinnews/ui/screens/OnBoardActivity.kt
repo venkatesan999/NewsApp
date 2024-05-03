@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -77,6 +76,7 @@ class OnBoardActivity : ComponentActivity() {
                                 fontFamily = Fonts.mediumFontFamily,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
+                                color = Color(0xFF000000),
                                 textAlign = TextAlign.Center
                             )
                             OnBoardComponent()
@@ -99,7 +99,7 @@ class OnBoardActivity : ComponentActivity() {
                                 }
                                 .border(
                                     1.dp,
-                                    Color(0xFFC9BA98),
+                                    Color(0xFFEFEEF2),
                                     shape = RoundedCornerShape(6.dp)
                                 )
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -112,9 +112,8 @@ class OnBoardActivity : ComponentActivity() {
                                 Text(
                                     text = "Quicken",
                                     textAlign = TextAlign.Center,
-                                    color = Color(0xFFF4DBAE),
+                                    color = Color(0xFF000000),
                                     fontFamily = Fonts.mediumFontFamily,
-                                    fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
                                 Spacer(modifier = Modifier.width(8.dp)) // Add space between text and image
@@ -122,7 +121,7 @@ class OnBoardActivity : ComponentActivity() {
                                     painter = painterResource(id = R.drawable.arrow),
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp),
-                                    colorFilter = ColorFilter.tint(Color(0xFFF4DBAE))
+                                    colorFilter = ColorFilter.tint(Color(0xFF000000))
                                 )
                             }
                         }

@@ -151,6 +151,8 @@ dependencies {
 
     implementation (libs.androidx.datastore.preferences)
 
+    implementation (libs.lottie)
+
     /*Testing dependencies*/
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
