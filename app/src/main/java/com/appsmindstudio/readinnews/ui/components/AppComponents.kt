@@ -13,6 +13,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +23,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -55,6 +59,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,13 +82,15 @@ import com.appsmindstudio.readinnews.ui.components.Fonts.regularFontFamily
 import com.appsmindstudio.readinnews.ui.navigation.Destinations
 import com.appsmindstudio.readinnews.util.AppConstants
 import com.appsmindstudio.readinnews.util.MMM_dd
+import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
+import com.appsmindstudio.readinnews.util.Utils.categoryList
 import com.appsmindstudio.readinnews.util.convertToDateFormat
 import com.appsmindstudio.readinnews.util.yyyy_MM_dd_T_HH_mm_ss
 
 object Fonts {
-    val regularFontFamily = FontFamily(Font(R.font.jost_regular))
-    val mediumFontFamily = FontFamily(Font(R.font.jost_medium))
-    val semiBoldFontFamily = FontFamily(Font(R.font.jost_semi_bold))
+    val regularFontFamily = FontFamily(Font(R.font.gantari_regular))
+    val mediumFontFamily = FontFamily(Font(R.font.gantari_medium))
+    val semiBoldFontFamily = FontFamily(Font(R.font.gantari_semi_bold))
 }
 
 @Composable
@@ -220,8 +227,8 @@ fun NewsColumnComponent(article: Article) {
             model = article.urlToImage,
             contentDescription = "",
             contentScale = ContentScale.FillHeight,
-            placeholder = painterResource(id = R.drawable.no_image),
-            error = painterResource(id = R.drawable.no_image)
+            placeholder = painterResource(id = R.drawable.dummy),
+            error = painterResource(id = R.drawable.dummy)
         )
 
         Column(
@@ -253,6 +260,66 @@ fun NewsColumnComponent(article: Article) {
 
             Spacer(modifier = Modifier.height(10.dp))
             ReadMoreButtonComponent(article.url ?: "")
+        }
+    }
+}
+
+@Composable
+fun CategoryList(
+    context: Context,
+    countryCode: String?,
+    category: String?,
+    onCategorySelected: (categoryName: String) -> Unit
+) {
+    var selectedItem by remember { mutableStateOf(category) }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            items(categoryList) { category ->
+                val isSelected = selectedItem == category.categoryName
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .clickable {
+                            selectedItem = category.categoryName
+                            onCategorySelected(category.categoryName)
+                            SharedPreferencesUtil.setCodeCategories(
+                                context = context,
+                                countryCode = "countryCode",
+                                countryCodeValue = countryCode!!,
+                                category = "category",
+                                categoryValue = category.categoryName
+                            )
+                        }
+                        .padding(8.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = category.categoryIcon),
+                        contentDescription = null,
+                        tint = if (isSelected) Color(0xFF008000) else Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Text(
+                        text = category.categoryName,
+                        style = TextStyle(
+                            fontSize = if (isSelected) 16.sp else 14.sp,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                            color = if (isSelected) Color(0xFF008000) else Color.Black
+                        ),
+                        fontFamily = regularFontFamily,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
         }
     }
 }
@@ -354,7 +421,6 @@ fun DragComponent(navController: NavHostController) {
     var offsetY by remember { mutableFloatStateOf(0f) }
     var isVisible by rememberSaveable { mutableStateOf(true) }
 
-
     val d = LocalDensity.current
 
     DisposableEffect(navController) {
@@ -443,4 +509,41 @@ fun LottieAnimation(
             it.playAnimation()
         }
     )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCategoryList() {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            items(categoryList) { category ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = category.categoryIcon),
+                        contentDescription = "",
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Text(
+                        text = category.categoryName,
+                        style = TextStyle(fontSize = 14.sp),
+                        fontFamily = regularFontFamily,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+        }
+    }
 }

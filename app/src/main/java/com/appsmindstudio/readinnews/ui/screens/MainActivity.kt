@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.appsmindstudio.readinnews.ui.components.DragComponent
 import com.appsmindstudio.readinnews.ui.navigation.AppNavigation
 import com.appsmindstudio.readinnews.ui.theme.NewsInShortTheme
 import com.appsmindstudio.readinnews.util.SharedPreferencesUtil
@@ -37,7 +36,6 @@ class MainActivity : ComponentActivity() {
                     )
                     if (isOnBoardScreenEnabled) {
                         AppEntryPoint(navController)
-                        DragComponent(navController)
                     } else {
                         val intent =
                             Intent(this@MainActivity, OnBoardActivity::class.java)

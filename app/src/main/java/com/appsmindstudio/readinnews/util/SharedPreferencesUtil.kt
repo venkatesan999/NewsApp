@@ -25,7 +25,14 @@ object SharedPreferencesUtil {
     fun getUserName(context: Context, key: String): String? {
         return getSharedPreferences(context).getString(key, "")
     }
-    fun setCodeCategories(context: Context, countryCode: String, countryCodeValue: String, category: String, categoryValue: String) {
+
+    fun setCodeCategories(
+        context: Context,
+        countryCode: String,
+        countryCodeValue: String,
+        category: String,
+        categoryValue: String
+    ) {
         val editor = getSharedPreferences(context).edit()
         editor.putString(countryCode, countryCodeValue)
         editor.putString(category, categoryValue)
@@ -37,14 +44,6 @@ object SharedPreferencesUtil {
         val value1 = sharedPreferences.getString(key1, "")
         val value2 = sharedPreferences.getString(key2, "")
         return Pair(value1, value2)
-    }
-
-    fun setSwipeUp(context: Context, key: String, value: Boolean) {
-        getSharedPreferences(context).edit().putBoolean(key, value).apply()
-    }
-
-    fun getSwipeUp(context: Context, key: String): Boolean {
-        return getSharedPreferences(context).getBoolean(key, false)
     }
 
 }

@@ -106,7 +106,7 @@ fun NavGraphBuilder.news(
     ) {
 
         composable(Destinations.NEWS_SCREEN.name) { _ ->
-            NewsScreen()
+            NewsScreen(navController)
         }
 
         composable(Destinations.SURVEY_HISTORY_SCREEN.name) {

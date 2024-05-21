@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(private val newsDataSource: NewsDataSource) {
-    suspend fun getNewsHeadlines(country: String, category: String): Flow<ResourceState<NewsResponse?>> {
+    suspend fun getNewsHeadlines(
+        country: String,
+        category: String
+    ): Flow<ResourceState<NewsResponse?>> {
         return flow {
             emit(ResourceState.Loading())
             val response = newsDataSource.getNewsHeadline(country, category)
