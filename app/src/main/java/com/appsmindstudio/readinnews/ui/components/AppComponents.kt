@@ -305,7 +305,7 @@ fun CategoryList(
                     Icon(
                         painter = painterResource(id = category.categoryIcon),
                         contentDescription = null,
-                        tint = if (isSelected) Color(0xFF008000) else Color.Black,
+                        tint = if (isSelected) Color(0xFF008000) else colorResource(id = R.color.black),
                         modifier = Modifier.size(30.dp)
                     )
                     Text(
@@ -313,7 +313,7 @@ fun CategoryList(
                         style = TextStyle(
                             fontSize = if (isSelected) 16.sp else 14.sp,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isSelected) Color(0xFF008000) else Color.Black
+                            color = if (isSelected) Color(0xFF008000) else colorResource(id = R.color.black)
                         ),
                         fontFamily = regularFontFamily,
                         textAlign = TextAlign.Center,
